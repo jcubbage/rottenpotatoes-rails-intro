@@ -11,11 +11,17 @@ class MoviesController < ApplicationController
   end
 
   def index
-     logger.debug "Parmeters passed in: #{params.inspect}"
+     #logger.debug "Parmeters passed in: #{params.inspect}"
+     @all_ratings = Movie.select(:rating).distinct.order(:rating)
      @movies = Movie.all
-     #@movies = Movie.all.order(:title)
+     if !params[:ratings].to_s.strip.empty?
+        @ratingshash = params[:ratings].keys
+        #logger.debug "Ratings from hash: #{@ratingshash.inspect}"
+        @movies = Movie.where(rating: @ratingshash) 
+     end
+     
     if !params[:sort].to_s.strip.empty? 
-      @movies = Movie.all.order(params[:sort])
+      @movies = @movies.order(params[:sort])
     end
   end
 
