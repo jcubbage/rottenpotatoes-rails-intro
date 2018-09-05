@@ -11,7 +11,12 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+     logger.debug "Parmeters passed in: #{params.inspect}"
+     @movies = Movie.all
+     #@movies = Movie.all.order(:title)
+    if !params[:sort].to_s.strip.empty? 
+      @movies = Movie.all.order(params[:sort])
+    end
   end
 
   def new
