@@ -4,4 +4,9 @@ module ApplicationHelper
         #logger.debug "Css class to be passed: #{css_class}"
         css_class
     end
+    
+    def checkboxChecked(rating)
+        unless session[:ratings].to_s.strip.empty? return true
+         session[:ratings].include?("#{rating}")
+    end
 end
