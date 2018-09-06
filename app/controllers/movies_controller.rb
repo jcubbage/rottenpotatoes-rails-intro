@@ -11,8 +11,8 @@ class MoviesController < ApplicationController
   end
 
   def index
-    logger.debug "Params: #{params.inspect}"
-    logger.debug "Session: #{session.inspect}"
+    #logger.debug "Params: #{params.inspect}"
+    #logger.debug "Session: #{session.inspect}"
     @redirect = false
     if params[:ratings].to_s.strip.empty? && !session[:ratings].to_s.strip.empty?
         params[:ratings] = session[:ratings]
@@ -23,9 +23,7 @@ class MoviesController < ApplicationController
       @redirect = true
     end
     if @redirect 
-      logger.debug "Redirecting"
-      logger.debug "Params: #{params.inspect}"
-      logger.debug "Session: #{session.inspect}"
+      flash.keep
       redirect_to movies_path(params)
     end
      @all_ratings = Movie.select(:rating).distinct.order(:rating)
@@ -35,7 +33,7 @@ class MoviesController < ApplicationController
         @ratingshash = params[:ratings].keys
         @movies = Movie.where(rating: @ratingshash) 
      end
-    if !params[:sort].to_s.strip.empty? 
+    if !params[:sort].to_s.strip.empty?
       session[:sort] = params[:sort]
       @movies = @movies.order(params[:sort])
     end
